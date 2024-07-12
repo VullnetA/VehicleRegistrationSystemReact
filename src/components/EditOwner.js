@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { fetchWithAuth } from "./fetchWithAuth"; // Import the fetchWithAuth function
 
 function EditOwner() {
   const { id } = useParams();
@@ -13,7 +14,9 @@ function EditOwner() {
   useEffect(() => {
     const fetchOwner = async () => {
       try {
-        const response = await fetch(`https://localhost:7221/owner/${id}`);
+        const response = await fetchWithAuth(
+          `https://localhost:7221/owner/${id}`
+        );
         if (response.ok) {
           const data = await response.json();
           setOwner(data);
@@ -39,13 +42,16 @@ function EditOwner() {
     };
 
     try {
-      const response = await fetch(`https://localhost:7221/owner/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedOwner),
-      });
+      const response = await fetchWithAuth(
+        `https://localhost:7221/owner/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedOwner),
+        }
+      );
 
       if (response.ok) {
         navigate(`/owner/${id}`);

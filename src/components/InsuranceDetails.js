@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { fetchWithAuth } from "./fetchWithAuth"; // Import the fetchWithAuth function
 
 function InsuranceDetails() {
   const { id } = useParams();
@@ -9,7 +10,9 @@ function InsuranceDetails() {
   useEffect(() => {
     const fetchInsurance = async () => {
       try {
-        const response = await fetch(`https://localhost:7221/insurance/${id}`);
+        const response = await fetchWithAuth(
+          `https://localhost:7221/insurance/${id}`
+        );
         if (response.ok) {
           const data = await response.json();
           setInsurance(data);

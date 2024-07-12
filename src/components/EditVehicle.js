@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { fetchWithAuth } from "./fetchWithAuth"; // Import the fetchWithAuth function
 
 function EditVehicle() {
   const { id } = useParams();
@@ -12,7 +13,9 @@ function EditVehicle() {
   useEffect(() => {
     const fetchVehicle = async () => {
       try {
-        const response = await fetch(`https://localhost:7221/vehicle/${id}`);
+        const response = await fetchWithAuth(
+          `https://localhost:7221/vehicle/${id}`
+        );
         if (response.ok) {
           const data = await response.json();
           setVehicle(data);
@@ -37,13 +40,16 @@ function EditVehicle() {
     };
 
     try {
-      const response = await fetch(`https://localhost:7221/vehicle/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedVehicle),
-      });
+      const response = await fetchWithAuth(
+        `https://localhost:7221/vehicle/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedVehicle),
+        }
+      );
 
       if (response.ok) {
         navigate(`/vehicle/${id}`);

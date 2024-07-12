@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { fetchWithAuth } from "./fetchWithAuth"; // Adjust the import path as necessary
 
 function AddOwner() {
   const [firstName, setFirstName] = useState("");
@@ -33,11 +34,8 @@ function AddOwner() {
     console.log("Sending owner data:", ownerData); // Log the payload
 
     try {
-      const response = await fetch("https://localhost:7221/api/Owner", {
+      const response = await fetchWithAuth("https://localhost:7221/api/Owner", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify(ownerData),
       });
 
