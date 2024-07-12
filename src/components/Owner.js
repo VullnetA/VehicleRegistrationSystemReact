@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { fetchWithAuth } from "./fetchWithAuth"; // Import the fetchWithAuth function
 
-function Owner({ onLogout }) {
+function Owner() {
   const [owners, setOwners] = useState([]);
   const [searchType, setSearchType] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -11,7 +12,7 @@ function Owner({ onLogout }) {
 
   const fetchData = async (url) => {
     try {
-      const response = await fetch(url);
+      const response = await fetchWithAuth(url);
       if (response.ok) {
         const data = await response.json();
         // Check if the response is an array or a single object
@@ -37,9 +38,12 @@ function Owner({ onLogout }) {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`https://localhost:7221/owner/${id}`, {
-        method: "DELETE",
-      });
+      const response = await fetchWithAuth(
+        `https://localhost:7221/owner/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (response.ok) {
         fetchData("https://localhost:7221/api/Owner"); // Refresh the list after deletion
       } else {
@@ -58,7 +62,7 @@ function Owner({ onLogout }) {
         url = `https://localhost:7221/owner/${searchQuery}`;
         break;
       case "name":
-        url = `https://localhost:7221/ownersbyname/${searchQuery}`;
+        url = `https://localhost:7221/searchByName/${searchQuery}`;
         break;
       case "city":
         url = `https://localhost:7221/findByCity/${searchQuery}`;

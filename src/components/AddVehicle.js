@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { fetchWithAuth } from "./fetchWithAuth"; // Adjust the import path as necessary
 
 function AddVehicle() {
   const [manufacturer, setManufacturer] = useState("");
@@ -28,13 +29,13 @@ function AddVehicle() {
     console.log("Sending vehicle data:", vehicleData); // Log the payload
 
     try {
-      const response = await fetch("https://localhost:7221/api/Vehicle", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(vehicleData),
-      });
+      const response = await fetchWithAuth(
+        "https://localhost:7221/api/Vehicle",
+        {
+          method: "POST",
+          body: JSON.stringify(vehicleData),
+        }
+      );
 
       if (response.ok) {
         setManufacturer("");

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { fetchWithAuth } from "./fetchWithAuth"; // Import the fetchWithAuth function
 
 function OwnerDetails() {
   const { id } = useParams();
@@ -10,7 +11,9 @@ function OwnerDetails() {
   useEffect(() => {
     const fetchOwner = async () => {
       try {
-        const response = await fetch(`https://localhost:7221/owner/${id}`);
+        const response = await fetchWithAuth(
+          `https://localhost:7221/owner/${id}`
+        );
         if (response.ok) {
           const data = await response.json();
           setOwner(data);
@@ -26,9 +29,12 @@ function OwnerDetails() {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`https://localhost:7221/owner/${id}`, {
-        method: "DELETE",
-      });
+      const response = await fetchWithAuth(
+        `https://localhost:7221/owner/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (response.ok) {
         navigate("/owners");
       } else {
@@ -54,8 +60,9 @@ function OwnerDetails() {
       <p>First Name: {owner.firstName}</p>
       <p>Last Name: {owner.lastName}</p>
       <p>Date of Birth: {new Date(owner.dateOfBirth).toLocaleDateString()}</p>
-      <p>Gender: {owner.gender}</p>
+      <p>Gender: {owner.gender === 0 ? "Male" : "Female"}</p>
       <p>Email: {owner.email}</p>
+      <p>Phone: {owner.phone}</p>
       <p>Address: {owner.address}</p>
       <p>
         License Issue Date:{" "}
