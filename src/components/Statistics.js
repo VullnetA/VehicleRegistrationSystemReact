@@ -221,60 +221,132 @@ function Statistics() {
     fetchCategoryCounts();
   }, []);
 
+  const renderTable = (data, title) => (
+    <div style={sectionStyle}>
+      <h2 style={sectionTitleStyle}>{title}</h2>
+      <table style={tableStyle}>
+        <thead>
+          <tr>
+            <th style={thStyle}>Type</th>
+            <th
+              style={{ ...thStyle, textAlign: "right", paddingRight: "20px" }}
+            >
+              Count
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.slice(0, 10).map((item) => (
+            <tr
+              key={
+                item.brand ||
+                item.transmission ||
+                item.city ||
+                item.fuel ||
+                item.year ||
+                item.category
+              }
+              style={trStyle}
+            >
+              <td style={tdStyle}>
+                {item.brand ||
+                  item.transmission ||
+                  item.city ||
+                  item.fuel ||
+                  item.year ||
+                  item.category}
+              </td>
+              <td style={{ ...countTdStyle, paddingRight: "20px" }}>
+                {item.count}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
   return (
-    <div>
-      <h1>Statistics</h1>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <h2>Vehicle Counts by Brand</h2>
-      <ul>
-        {brandCounts.slice(0, 10).map((item) => (
-          <li key={item.brand}>
-            {item.brand}: {item.count}
-          </li>
-        ))}
-      </ul>
-      <h2>Vehicle Counts by Transmission</h2>
-      <ul>
-        {transmissionCounts.slice(0, 10).map((item) => (
-          <li key={item.transmission}>
-            {item.transmission}: {item.count}
-          </li>
-        ))}
-      </ul>
-      <h2>Driver License Counts by City</h2>
-      <ul>
-        {licenseCountsByCity.slice(0, 10).map((item) => (
-          <li key={item.city}>
-            {item.city}: {item.count}
-          </li>
-        ))}
-      </ul>
-      <h2>Vehicle Counts by Fuel Type</h2>
-      <ul>
-        {fuelTypeCounts.slice(0, 10).map((item) => (
-          <li key={item.fuel}>
-            {item.fuel}: {item.count}
-          </li>
-        ))}
-      </ul>
-      <h2>Vehicle Counts by Year</h2>
-      <ul>
-        {yearCounts.slice(0, 10).map((item) => (
-          <li key={item.year}>
-            {item.year}: {item.count}
-          </li>
-        ))}
-      </ul>
-      <h2>Vehicle Counts by Category</h2>
-      <ul>
-        {categoryCounts.slice(0, 10).map((item) => (
-          <li key={item.category}>
-            {item.category}: {item.count}
-          </li>
-        ))}
-      </ul>
+    <div style={containerStyle}>
+      <h1 style={titleStyle}>Statistics</h1>
+      {error && <p style={errorStyle}>{error}</p>}
+      <div style={rowStyle}>
+        {renderTable(brandCounts, "Vehicle Counts by Brand")}
+        {renderTable(transmissionCounts, "Vehicle Counts by Transmission")}
+      </div>
+      <div style={rowStyle}>
+        {renderTable(licenseCountsByCity, "Driver License Counts by City")}
+        {renderTable(fuelTypeCounts, "Vehicle Counts by Fuel Type")}
+      </div>
+      <div style={rowStyle}>
+        {renderTable(yearCounts, "Vehicle Counts by Year")}
+        {renderTable(categoryCounts, "Vehicle Counts by Category")}
+      </div>
     </div>
   );
 }
+
+const containerStyle = {
+  marginLeft: "220px", // Adjusted to start after the sidebar
+  marginTop: "80px", // Adjusted to start after the header
+  padding: "20px 40px",
+  backgroundColor: "#f4f4f9",
+  borderRadius: "8px",
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+};
+
+const titleStyle = {
+  marginBottom: "20px",
+  color: "#333",
+};
+
+const rowStyle = {
+  display: "flex",
+  justifyContent: "space-between",
+  marginBottom: "40px",
+};
+
+const sectionStyle = {
+  flex: "0 0 48%", // Ensures two sections fit in one row with a small gap
+  backgroundColor: "#fff",
+  padding: "20px",
+  borderRadius: "8px",
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+};
+
+const sectionTitleStyle = {
+  marginBottom: "10px",
+  color: "#333",
+};
+
+const tableStyle = {
+  width: "100%",
+  borderCollapse: "collapse",
+  marginTop: "10px",
+};
+
+const thStyle = {
+  borderBottom: "2px solid #ddd",
+  padding: "10px",
+  textAlign: "left",
+};
+
+const trStyle = {
+  borderBottom: "1px solid #ddd",
+};
+
+const tdStyle = {
+  padding: "10px",
+  textAlign: "left",
+};
+
+const countTdStyle = {
+  padding: "10px",
+  textAlign: "right", // Align counts slightly to the right
+};
+
+const errorStyle = {
+  color: "red",
+};
 
 export default Statistics;

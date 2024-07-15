@@ -11,6 +11,17 @@ function Vehicle() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  const categoryEnum = [
+    "Motorcycle",
+    "Hatchback",
+    "Coupe",
+    "Sedan",
+    "Van",
+    "SUV",
+    "Truck",
+    "Bus",
+  ];
+
   const fetchVehicleRegistrationStatus = async (id) => {
     try {
       const response = await fetchWithAuth(
@@ -138,65 +149,251 @@ function Vehicle() {
     fetchData(url);
   };
 
+  const formatDate = (dateString) => {
+    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
-    <div>
-      <h1>Vehicles</h1>
-
-      <div>
-        <h3>Total number of registered vehicles: {registeredCount}</h3>
-        <h3>Total number of unregistered vehicles: {unregisteredCount}</h3>
-      </div>
-
-      <div>
-        <label htmlFor="searchType">Search By: </label>
-        <select
-          id="searchType"
-          value={searchType}
-          onChange={(e) => setSearchType(e.target.value)}
-        >
-          <option value="">Select</option>
-          <option value="id">ID</option>
-          <option value="owner">Owner</option>
-          <option value="year">Year</option>
-          <option value="power">Horsepower</option>
-          <option value="fuel">Fuel Type</option>
-          <option value="brand">Brand</option>
-          <option value="licensePlate">License Plate</option>
-        </select>
-      </div>
-
-      {searchType && (
-        <form onSubmit={handleSearch}>
-          <label htmlFor="searchQuery">
-            Enter {searchType === "id" ? "ID" : searchType}:
+    <div style={containerStyle}>
+      <div style={headerStyle}>
+        <h1 style={titleStyle}>Vehicles</h1>
+        <div style={searchContainerStyle}>
+          <label htmlFor="searchType" style={searchLabelStyle}>
+            Search By:{" "}
           </label>
-          <input
-            id="searchQuery"
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button type="submit">Search</button>
-        </form>
-      )}
-
-      <ul>
-        {vehicles?.map((vehicle) => (
-          <li key={vehicle.id}>
-            {vehicle.manufacturer} - {vehicle.model} -{" "}
-            {vehicle.isRegistered ? "Registered" : "Unregistered"}
-            <button onClick={() => navigate(`/vehicle/${vehicle.id}`)}>
-              Details
-            </button>
-            <button onClick={() => navigate(`/edit-vehicle/${vehicle.id}`)}>
-              Edit
-            </button>
-            <button onClick={() => handleDelete(vehicle.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+          <select
+            id="searchType"
+            value={searchType}
+            onChange={(e) => setSearchType(e.target.value)}
+            style={searchSelectStyle}
+          >
+            <option value="">Select</option>
+            <option value="Vehicle ID">ID</option>
+            <option value="Owner ID">Owner</option>
+            <option value="Year">Year</option>
+            <option value="Horsepower">Horsepower</option>
+            <option value="Fuel">Fuel Type</option>
+            <option value="Brand">Brand</option>
+            <option value="License Plate">License Plate</option>
+          </select>
+          {searchType && (
+            <form onSubmit={handleSearch} style={searchFormStyle}>
+              <label htmlFor="searchQuery" style={searchLabelStyle}>
+                Enter {searchType === "id" ? "ID" : searchType}:
+              </label>
+              <input
+                id="searchQuery"
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                style={searchInputStyle}
+              />
+              <button type="submit" style={searchButtonStyle}>
+                Search
+              </button>
+            </form>
+          )}
+        </div>
+        <div style={countsContainerStyle}>
+          <div style={countBoxStyle}>
+            <h3>Total Registered Vehicles</h3>
+            <p>{registeredCount}</p>
+          </div>
+          <div style={countBoxStyle}>
+            <h3>Total Unregistered Vehicles</h3>
+            <p>{unregisteredCount}</p>
+          </div>
+        </div>
+      </div>
+      {error && <p style={errorStyle}>{error}</p>}
+      <table style={tableStyle}>
+        <thead>
+          <tr>
+            <th style={thStyle}>Manufacturer</th>
+            <th style={thStyle}>Model</th>
+            <th style={thStyle}>Year</th>
+            <th style={thStyle}>Category</th>
+            <th style={thStyle}>License Plate</th>
+            <th style={thStyle}>Registration Status</th>
+            <th style={thStyle}>Date Registered</th>
+            <th style={thStyle}>Expiration Date</th>
+            <th style={thStyle}>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {vehicles?.map((vehicle) => (
+            <tr key={vehicle.id} style={trStyle}>
+              <td style={tdStyle}>{vehicle.manufacturer}</td>
+              <td style={tdStyle}>{vehicle.model}</td>
+              <td style={tdStyle}>{vehicle.year}</td>
+              <td style={tdStyle}>{categoryEnum[vehicle.category]}</td>
+              <td style={tdStyle}>{vehicle.licensePlate}</td>
+              <td style={tdStyle}>
+                {vehicle.isRegistered ? (
+                  "Registered"
+                ) : (
+                  <span style={notRegisteredStyle}>Not Registered</span>
+                )}
+              </td>
+              <td style={tdStyle}>
+                {vehicle.isRegistered
+                  ? formatDate(vehicle.dateRegistered)
+                  : "N/A"}
+              </td>
+              <td style={tdStyle}>
+                {vehicle.isRegistered
+                  ? formatDate(vehicle.expirationDate)
+                  : "N/A"}
+              </td>
+              <td style={tdStyle}>
+                <button
+                  onClick={() => navigate(`/vehicle/${vehicle.id}`)}
+                  style={buttonStyle}
+                >
+                  Details
+                </button>
+                <button
+                  onClick={() => navigate(`/edit-vehicle/${vehicle.id}`)}
+                  style={buttonStyle}
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(vehicle.id)}
+                  style={deleteButtonStyle}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
+
+const containerStyle = {
+  marginLeft: "220px", // Adjusted to start after the sidebar
+  marginTop: "80px", // Adjusted to start after the header
+  padding: "20px 40px",
+};
+
+const headerStyle = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: "20px",
+};
+
+const titleStyle = {
+  margin: 0,
+  color: "#333",
+};
+
+const searchContainerStyle = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center", // Center the search section
+  flex: 1, // Allow the search section to take available space
+};
+
+const searchLabelStyle = {
+  marginBottom: "10px",
+  color: "#333",
+};
+
+const searchSelectStyle = {
+  padding: "10px",
+  borderRadius: "4px",
+  border: "1px solid #ccc",
+  marginBottom: "10px",
+};
+
+const searchFormStyle = {
+  display: "flex",
+  alignItems: "center",
+};
+
+const searchInputStyle = {
+  padding: "10px",
+  borderRadius: "4px",
+  border: "1px solid #ccc",
+  marginRight: "10px",
+};
+
+const searchButtonStyle = {
+  padding: "10px 20px",
+  borderRadius: "4px",
+  border: "none",
+  backgroundColor: "#007bff",
+  color: "#fff",
+  cursor: "pointer",
+};
+
+const countsContainerStyle = {
+  display: "flex",
+  gap: "20px", // Space between the count boxes
+  justifyContent: "flex-end", // Align the count boxes to the right
+};
+
+const countBoxStyle = {
+  backgroundColor: "#f8f9fa",
+  padding: "10px 20px",
+  borderRadius: "8px",
+  boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+  width: "200px", // Ensures both boxes are the same width
+  textAlign: "center",
+};
+
+const tableStyle = {
+  width: "100%",
+  borderCollapse: "collapse",
+  marginTop: "20px",
+};
+
+const thStyle = {
+  borderBottom: "2px solid #ddd",
+  padding: "10px",
+  textAlign: "left",
+};
+
+const trStyle = {
+  borderBottom: "1px solid #ddd",
+};
+
+const tdStyle = {
+  padding: "10px",
+  textAlign: "left",
+};
+
+const buttonStyle = {
+  padding: "10px 20px", // Increased padding for larger buttons
+  borderRadius: "4px",
+  border: "none",
+  backgroundColor: "#007bff",
+  color: "#fff",
+  cursor: "pointer",
+  marginRight: "5px",
+};
+
+const deleteButtonStyle = {
+  padding: "10px 20px", // Increased padding for larger buttons
+  borderRadius: "4px",
+  border: "none",
+  backgroundColor: "#f44336",
+  color: "#fff",
+  cursor: "pointer",
+};
+
+const errorStyle = {
+  color: "red",
+};
+
+const notRegisteredStyle = {
+  color: "red",
+  fontWeight: "bold",
+};
 
 export default Vehicle;
