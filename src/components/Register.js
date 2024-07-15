@@ -40,38 +40,114 @@ function Register() {
   };
 
   return (
-    <div>
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Confirm Password:</label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </div>
-        <button type="submit">Register</button>
-      </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div style={outerContainerStyle}>
+      <div style={containerStyle}>
+        <h1 style={titleStyle}>Register</h1>
+        <form onSubmit={handleSubmit} style={formStyle}>
+          <div style={formGroupStyle}>
+            <label style={labelStyle}>Email:</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              style={inputStyle}
+            />
+          </div>
+          <div style={formGroupStyle}>
+            <label style={labelStyle}>Password:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              style={inputStyle}
+            />
+          </div>
+          <div style={formGroupStyle}>
+            <label style={labelStyle}>Confirm Password:</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              style={inputStyle}
+            />
+          </div>
+          <button type="submit" style={buttonStyle}>
+            Register
+          </button>
+        </form>
+        {error && <p style={errorStyle}>{error}</p>}
+      </div>
     </div>
   );
 }
+
+const outerContainerStyle = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "100vh",
+  backgroundColor: "#f4f4f9",
+};
+
+const containerStyle = {
+  backgroundColor: "#fff",
+  padding: "40px",
+  borderRadius: "8px",
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+  width: "100%",
+  maxWidth: "400px",
+  textAlign: "center",
+};
+
+const titleStyle = {
+  color: "#333",
+  fontSize: "2.5em",
+  fontWeight: "bold",
+  marginBottom: "20px",
+};
+
+const formStyle = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+};
+
+const formGroupStyle = {
+  width: "100%",
+  marginBottom: "15px",
+  textAlign: "left",
+};
+
+const labelStyle = {
+  display: "block",
+  marginBottom: "5px",
+  color: "#333",
+};
+
+const inputStyle = {
+  width: "100%",
+  padding: "10px",
+  borderRadius: "4px",
+  border: "1px solid #ccc",
+  boxSizing: "border-box",
+};
+
+const buttonStyle = {
+  width: "100%",
+  padding: "10px",
+  borderRadius: "4px",
+  border: "none",
+  backgroundColor: "#007bff",
+  color: "#fff",
+  cursor: "pointer",
+  fontSize: "1em",
+  marginTop: "10px",
+};
+
+const errorStyle = {
+  color: "red",
+  textAlign: "center",
+  marginTop: "10px",
+};
 
 export default Register;
