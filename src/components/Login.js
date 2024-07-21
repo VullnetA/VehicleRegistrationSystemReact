@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../style/AuthForm.css";
 
 function Login({ onLogin }) {
   const [email, setEmail] = useState("");
@@ -20,9 +21,9 @@ function Login({ onLogin }) {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem("token", data.token); // Store the token
-        onLogin(); // Call the onLogin prop to update the authenticated state in App component
-        navigate("/welcome"); // Redirect to welcome screen after successful login
+        localStorage.setItem("token", data.token);
+        onLogin();
+        navigate("/welcome");
         setEmail("");
         setPassword("");
         setError(null);
@@ -35,36 +36,36 @@ function Login({ onLogin }) {
   };
 
   return (
-    <div style={outerContainerStyle}>
-      <div style={containerStyle}>
-        <h1 style={titleStyle}>Login</h1>
-        <form onSubmit={handleOnSubmit} style={formStyle}>
-          <div style={formGroupStyle}>
-            <label style={labelStyle}>Email:</label>
+    <div className="auth-outer-container">
+      <div className="auth-container">
+        <h1 className="auth-title">Login</h1>
+        <form onSubmit={handleOnSubmit} className="auth-form">
+          <div className="auth-form-group">
+            <label className="auth-label">Email:</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              style={inputStyle}
+              className="auth-input"
             />
           </div>
-          <div style={formGroupStyle}>
-            <label style={labelStyle}>Password:</label>
+          <div className="auth-form-group">
+            <label className="auth-label">Password:</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              style={inputStyle}
+              className="auth-input"
             />
           </div>
-          <button type="submit" style={buttonStyle}>
+          <button type="submit" className="auth-button">
             Login
           </button>
         </form>
-        {error && <p style={errorStyle}>{error}</p>}
-        <p style={registerLinkStyle}>
+        {error && <p className="auth-error">{error}</p>}
+        <p className="auth-register-link">
           Don't have an account?{" "}
-          <a href="/register" style={linkStyle}>
+          <a href="/register" className="auth-link">
             Register here
           </a>
         </p>
@@ -72,84 +73,5 @@ function Login({ onLogin }) {
     </div>
   );
 }
-
-const outerContainerStyle = {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  height: "100vh",
-  backgroundColor: "#f4f4f9",
-};
-
-const containerStyle = {
-  backgroundColor: "#fff",
-  padding: "40px",
-  borderRadius: "8px",
-  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-  width: "100%",
-  maxWidth: "400px",
-  textAlign: "center",
-};
-
-const titleStyle = {
-  color: "#333",
-  fontSize: "2.5em",
-  fontWeight: "bold",
-  marginBottom: "20px",
-};
-
-const formStyle = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-};
-
-const formGroupStyle = {
-  width: "100%",
-  marginBottom: "15px",
-  textAlign: "left",
-};
-
-const labelStyle = {
-  display: "block",
-  marginBottom: "5px",
-  color: "#333",
-};
-
-const inputStyle = {
-  width: "100%",
-  padding: "10px",
-  borderRadius: "4px",
-  border: "1px solid #ccc",
-  boxSizing: "border-box",
-};
-
-const buttonStyle = {
-  width: "100%",
-  padding: "10px",
-  borderRadius: "4px",
-  border: "none",
-  backgroundColor: "#007bff",
-  color: "#fff",
-  cursor: "pointer",
-  fontSize: "1em",
-  marginTop: "10px",
-};
-
-const errorStyle = {
-  color: "red",
-  textAlign: "center",
-  marginTop: "10px",
-};
-
-const registerLinkStyle = {
-  marginTop: "20px",
-  color: "#333",
-};
-
-const linkStyle = {
-  color: "#007bff",
-  textDecoration: "none",
-};
 
 export default Login;

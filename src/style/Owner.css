@@ -1,0 +1,108 @@
+.owner-container {
+  margin-left: 220px;
+  margin-top: 80px;
+  padding: 20px 40px;
+}
+
+.owner-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.owner-title {
+  margin: 0;
+  color: #333;
+}
+
+.owner-search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.owner-search-label {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.owner-search-select {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.owner-search-form {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.owner-search-input {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 10px;
+}
+
+.owner-search-button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.owner-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.owner-th {
+  border-bottom: 2px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.owner-tr {
+  border-bottom: 1px solid #ddd;
+}
+
+.owner-td {
+  padding: 10px;
+  text-align: left;
+}
+
+.owner-button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.owner-delete-button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: none;
+  background-color: #f44336;
+  color: #fff;
+  cursor: pointer;
+}
+
+.owner-error {
+  color: red;
+  text-align: center;
+  margin-top: 20px;
+}

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchWithAuth } from "./fetchWithAuth"; // Import the fetchWithAuth function
+import { fetchWithAuth } from "./fetchWithAuth";
+import Header from "./Header";
+import "../style/OwnerDetails.css";
 
 function OwnerDetails() {
   const { id } = useParams();
@@ -46,138 +48,68 @@ function OwnerDetails() {
   };
 
   if (error) {
-    return <div style={errorStyle}>{error}</div>;
+    return <div className="owner-details-error">{error}</div>;
   }
 
   if (!owner) {
-    return <div style={loadingStyle}>Loading...</div>;
+    return <div className="owner-details-loading">Loading...</div>;
   }
 
   return (
-    <div style={containerStyle}>
-      <h1 style={titleStyle}>Owner Details</h1>
-      <div style={contentContainerStyle}>
-        <div style={columnStyle}>
-          <p style={detailStyle}>
-            <strong>ID:</strong> {owner.id}
-          </p>
-          <p style={detailStyle}>
-            <strong>First Name:</strong> {owner.firstName}
-          </p>
-          <p style={detailStyle}>
-            <strong>Last Name:</strong> {owner.lastName}
-          </p>
-          <p style={detailStyle}>
-            <strong>Date of Birth:</strong>{" "}
-            {new Date(owner.dateOfBirth).toLocaleDateString()}
-          </p>
-          <p style={detailStyle}>
-            <strong>Gender:</strong> {owner.gender === 0 ? "Male" : "Female"}
-          </p>
-          <p style={detailStyle}>
-            <strong>Email:</strong> {owner.email}
-          </p>
-          <p style={detailStyle}>
-            <strong>Phone:</strong> {owner.phone}
-          </p>
-          <p style={detailStyle}>
-            <strong>Address:</strong> {owner.address}
-          </p>
-          <p style={detailStyle}>
-            <strong>License Issue Date:</strong>{" "}
-            {new Date(owner.licenseIssueDate).toLocaleDateString()}
-          </p>
+    <div>
+      <Header onLogout={() => console.log("Logged out")} />
+      <div className="owner-details-container">
+        <h1 className="owner-details-title">Owner Details</h1>
+        <div className="owner-details-content-container">
+          <div className="owner-details-column">
+            <p className="owner-details-detail">
+              <strong>ID:</strong> {owner.id}
+            </p>
+            <p className="owner-details-detail">
+              <strong>First Name:</strong> {owner.firstName}
+            </p>
+            <p className="owner-details-detail">
+              <strong>Last Name:</strong> {owner.lastName}
+            </p>
+            <p className="owner-details-detail">
+              <strong>Date of Birth:</strong>{" "}
+              {new Date(owner.dateOfBirth).toLocaleDateString()}
+            </p>
+            <p className="owner-details-detail">
+              <strong>Gender:</strong> {owner.gender === 0 ? "Male" : "Female"}
+            </p>
+            <p className="owner-details-detail">
+              <strong>Email:</strong> {owner.email}
+            </p>
+            <p className="owner-details-detail">
+              <strong>Phone:</strong> {owner.phone}
+            </p>
+            <p className="owner-details-detail">
+              <strong>Address:</strong> {owner.address}
+            </p>
+            <p className="owner-details-detail">
+              <strong>License Issue Date:</strong>{" "}
+              {new Date(owner.licenseIssueDate).toLocaleDateString()}
+            </p>
+          </div>
         </div>
-      </div>
-      <div style={buttonContainerStyle}>
-        <button
-          onClick={() => navigate(`/edit-owner/${id}`)}
-          style={editButtonStyle}
-        >
-          Edit Owner
-        </button>
-        <button onClick={handleDelete} style={deleteButtonStyle}>
-          Delete Owner
-        </button>
+        <div className="owner-details-button-container">
+          <button
+            onClick={() => navigate(`/edit-owner/${id}`)}
+            className="owner-details-edit-button"
+          >
+            Edit Owner
+          </button>
+          <button
+            onClick={handleDelete}
+            className="owner-details-delete-button"
+          >
+            Delete Owner
+          </button>
+        </div>
       </div>
     </div>
   );
 }
-
-const containerStyle = {
-  marginLeft: "220px", // Adjusted to start after the sidebar
-  marginTop: "80px", // Adjusted to start after the header
-  padding: "20px 40px",
-  backgroundColor: "#f4f4f9",
-  borderRadius: "8px",
-  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-};
-
-const titleStyle = {
-  color: "#333",
-  marginBottom: "20px",
-  textAlign: "center", // Center the title
-  fontSize: "2em",
-  fontWeight: "bold",
-};
-
-const contentContainerStyle = {
-  display: "flex",
-  justifyContent: "center",
-  marginBottom: "20px",
-};
-
-const columnStyle = {
-  flex: 1,
-  marginRight: "20px",
-  padding: "20px",
-  backgroundColor: "#fff",
-  borderRadius: "8px",
-  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-};
-
-const detailStyle = {
-  marginBottom: "10px",
-  color: "#333",
-};
-
-const buttonContainerStyle = {
-  display: "flex",
-  justifyContent: "center", // Center the buttons
-  gap: "20px",
-  marginTop: "20px",
-};
-
-const editButtonStyle = {
-  padding: "10px 20px",
-  borderRadius: "4px",
-  border: "none",
-  backgroundColor: "#007bff",
-  color: "#fff",
-  cursor: "pointer",
-  transition: "background-color 0.3s ease",
-};
-
-const deleteButtonStyle = {
-  padding: "10px 20px",
-  borderRadius: "4px",
-  border: "none",
-  backgroundColor: "#f44336",
-  color: "#fff",
-  cursor: "pointer",
-  transition: "background-color 0.3s ease",
-};
-
-const errorStyle = {
-  color: "red",
-  textAlign: "center",
-  marginTop: "20px",
-};
-
-const loadingStyle = {
-  color: "#333",
-  textAlign: "center",
-  marginTop: "20px",
-};
 
 export default OwnerDetails;

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchWithAuth } from "./fetchWithAuth"; // Import the fetchWithAuth function
+import { fetchWithAuth } from "./fetchWithAuth";
+import Header from "./Header";
+import "../style/VehicleDetails.css";
 
 function VehicleDetails() {
   const { id } = useParams();
@@ -8,7 +10,7 @@ function VehicleDetails() {
   const [vehicle, setVehicle] = useState(null);
   const [insurance, setInsurance] = useState(null);
   const [error, setError] = useState(null);
-  const [insuranceCompany, setInsuranceCompany] = useState(""); // State for selected insurance company
+  const [insuranceCompany, setInsuranceCompany] = useState("");
 
   const categoryEnum = [
     "Motorcycle",
@@ -53,7 +55,6 @@ function VehicleDetails() {
         );
         if (response.ok) {
           const data = await response.json();
-          // Check if the insurance data is meaningful
           if (
             data.id === 0 &&
             data.insuranceCompany === 0 &&
@@ -64,7 +65,7 @@ function VehicleDetails() {
             setInsurance(data);
           }
         } else if (response.status === 404) {
-          setInsurance(null); // Set insurance to null if not found
+          setInsurance(null);
         } else {
           setError("Failed to fetch insurance details");
         }
@@ -115,7 +116,6 @@ function VehicleDetails() {
       );
 
       if (response.ok) {
-        // Fetch the newly added insurance details
         const fetchNewInsurance = async () => {
           try {
             const newInsuranceResponse = await fetchWithAuth(
@@ -123,7 +123,7 @@ function VehicleDetails() {
             );
             if (newInsuranceResponse.ok) {
               const newInsuranceData = await newInsuranceResponse.json();
-              navigate(`/insurance/${newInsuranceData.id}`); // Redirect to the insurance details page
+              navigate(`/insurance/${newInsuranceData.id}`);
             } else {
               setError("Failed to fetch new insurance details");
             }
@@ -142,223 +142,119 @@ function VehicleDetails() {
   };
 
   if (error) {
-    return <div style={errorStyle}>{error}</div>;
+    return <div className="vehicle-details-error">{error}</div>;
   }
 
   if (!vehicle) {
-    return <div style={loadingStyle}>Loading...</div>;
+    return <div className="vehicle-details-loading">Loading...</div>;
   }
 
   return (
-    <div style={containerStyle}>
-      <h1 style={titleStyle}>Vehicle Details</h1>
-      <div style={contentContainerStyle}>
-        <div style={columnStyle}>
-          <h2 style={subTitleStyle}>Vehicle Information</h2>
-          <p style={detailStyle}>
-            <strong>ID:</strong> {vehicle.id}
-          </p>
-          <p style={detailStyle}>
-            <strong>Manufacturer:</strong> {vehicle.manufacturer}
-          </p>
-          <p style={detailStyle}>
-            <strong>Model:</strong> {vehicle.model}
-          </p>
-          <p style={detailStyle}>
-            <strong>Year:</strong> {vehicle.year}
-          </p>
-          <p style={detailStyle}>
-            <strong>Category:</strong> {categoryEnum[vehicle.category]}
-          </p>
-          <p style={detailStyle}>
-            <strong>License Plate:</strong> {vehicle.licensePlate}
-          </p>
-          <p style={detailStyle}>
-            <strong>Date Registered:</strong>{" "}
-            {new Date(vehicle.dateRegistered).toLocaleDateString()}
-          </p>
-          <p style={detailStyle}>
-            <strong>Expiration Date:</strong>{" "}
-            {new Date(vehicle.expirationDate).toLocaleDateString()}
-          </p>
+    <div>
+      <Header onLogout={() => console.log("Logged out")} />
+      <div className="vehicle-details-container">
+        <h1 className="vehicle-details-title">Vehicle Details</h1>
+        <div className="vehicle-details-content-container">
+          <div className="vehicle-details-column">
+            <h2 className="vehicle-details-sub-title">Vehicle Information</h2>
+            <p className="vehicle-details-detail">
+              <strong>ID:</strong> {vehicle.id}
+            </p>
+            <p className="vehicle-details-detail">
+              <strong>Manufacturer:</strong> {vehicle.manufacturer}
+            </p>
+            <p className="vehicle-details-detail">
+              <strong>Model:</strong> {vehicle.model}
+            </p>
+            <p className="vehicle-details-detail">
+              <strong>Year:</strong> {vehicle.year}
+            </p>
+            <p className="vehicle-details-detail">
+              <strong>Category:</strong> {categoryEnum[vehicle.category]}
+            </p>
+            <p className="vehicle-details-detail">
+              <strong>License Plate:</strong> {vehicle.licensePlate}
+            </p>
+            <p className="vehicle-details-detail">
+              <strong>Date Registered:</strong>{" "}
+              {new Date(vehicle.dateRegistered).toLocaleDateString()}
+            </p>
+            <p className="vehicle-details-detail">
+              <strong>Expiration Date:</strong>{" "}
+              {new Date(vehicle.expirationDate).toLocaleDateString()}
+            </p>
+          </div>
+          <div className="vehicle-details-column">
+            <h2 className="vehicle-details-sub-title">Owner Details</h2>
+            <p className="vehicle-details-detail">
+              <strong>ID:</strong> {vehicle.owner.id}
+            </p>
+            <p className="vehicle-details-detail">
+              <strong>Name:</strong> {vehicle.owner.firstName}{" "}
+              {vehicle.owner.lastName}
+            </p>
+            <p className="vehicle-details-detail">
+              <strong>License Issue Date:</strong>{" "}
+              {new Date(vehicle.owner.licenseIssueDate).toLocaleDateString()}
+            </p>
+            <h2 className="vehicle-details-sub-title">Insurance Status</h2>
+            {insurance ? (
+              <div>
+                <p className="vehicle-details-detail">
+                  This vehicle has registered insurance.
+                </p>
+                <button
+                  onClick={() => navigate(`/insurance/${insurance.id}`)}
+                  className="vehicle-details-view-button"
+                >
+                  View Insurance Details
+                </button>
+              </div>
+            ) : (
+              <div>
+                <p className="vehicle-details-detail">
+                  No insurance found for this vehicle.
+                </p>
+                <select
+                  value={insuranceCompany}
+                  onChange={(e) => setInsuranceCompany(e.target.value)}
+                  className="vehicle-details-select"
+                >
+                  <option value="">Select Insurance Company</option>
+                  {insuranceCompanies.map((company) => (
+                    <option key={company.value} value={company.value}>
+                      {company.label}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  onClick={handleAddInsurance}
+                  className="vehicle-details-add-button"
+                  disabled={!insuranceCompany}
+                >
+                  Add Insurance
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-        <div style={columnStyle}>
-          <h2 style={subTitleStyle}>Owner Details</h2>
-          <p style={detailStyle}>
-            <strong>ID:</strong> {vehicle.owner.id}
-          </p>
-          <p style={detailStyle}>
-            <strong>Name:</strong> {vehicle.owner.firstName}{" "}
-            {vehicle.owner.lastName}
-          </p>
-          <p style={detailStyle}>
-            <strong>License Issue Date:</strong>{" "}
-            {new Date(vehicle.owner.licenseIssueDate).toLocaleDateString()}
-          </p>
-          <h2 style={subTitleStyle}>Insurance Status</h2>
-          {insurance ? (
-            <div>
-              <p style={detailStyle}>This vehicle has registered insurance.</p>
-              <button
-                onClick={() => navigate(`/insurance/${insurance.id}`)}
-                style={viewButtonStyle}
-              >
-                View Insurance Details
-              </button>
-            </div>
-          ) : (
-            <div>
-              <p style={detailStyle}>No insurance found for this vehicle.</p>
-              <select
-                value={insuranceCompany}
-                onChange={(e) => setInsuranceCompany(e.target.value)}
-                style={selectStyle}
-              >
-                <option value="">Select Insurance Company</option>
-                {insuranceCompanies.map((company) => (
-                  <option key={company.value} value={company.value}>
-                    {company.label}
-                  </option>
-                ))}
-              </select>
-              <button
-                onClick={handleAddInsurance}
-                style={addButtonStyle}
-                disabled={!insuranceCompany} // Disable the button if no company is selected
-              >
-                Add Insurance
-              </button>
-            </div>
-          )}
+        <div className="vehicle-details-button-container">
+          <button
+            onClick={() => navigate(`/edit-vehicle/${id}`)}
+            className="vehicle-details-edit-button"
+          >
+            Edit Vehicle
+          </button>
+          <button
+            onClick={handleDelete}
+            className="vehicle-details-delete-button"
+          >
+            Delete Vehicle
+          </button>
         </div>
-      </div>
-      <div style={buttonContainerStyle}>
-        <button
-          onClick={() => navigate(`/edit-vehicle/${id}`)}
-          style={editButtonStyle}
-        >
-          Edit Vehicle
-        </button>
-        <button onClick={handleDelete} style={deleteButtonStyle}>
-          Delete Vehicle
-        </button>
       </div>
     </div>
   );
 }
-
-const containerStyle = {
-  marginLeft: "220px", // Adjusted to start after the sidebar
-  marginTop: "80px", // Adjusted to start after the header
-  padding: "20px 40px",
-  backgroundColor: "#f4f4f9",
-  borderRadius: "8px",
-  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-};
-
-const titleStyle = {
-  color: "#333",
-  marginBottom: "20px",
-  textAlign: "center", // Center the title
-  fontSize: "2em",
-  fontWeight: "bold",
-};
-
-const contentContainerStyle = {
-  display: "flex",
-  justifyContent: "space-between",
-  marginBottom: "20px", // Add margin-bottom to separate from the buttons
-};
-
-const columnStyle = {
-  flex: 1,
-  marginRight: "20px",
-  padding: "20px",
-  backgroundColor: "#fff",
-  borderRadius: "8px",
-  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-};
-
-const detailStyle = {
-  marginBottom: "10px",
-  color: "#333",
-};
-
-const subTitleStyle = {
-  marginTop: "20px",
-  marginBottom: "10px",
-  color: "#333",
-  fontSize: "1.5em",
-  fontWeight: "bold",
-};
-
-const buttonContainerStyle = {
-  display: "flex",
-  justifyContent: "center", // Center the buttons
-  gap: "20px",
-  marginTop: "20px",
-};
-
-const editButtonStyle = {
-  padding: "10px 20px",
-  borderRadius: "4px",
-  border: "none",
-  backgroundColor: "#007bff",
-  color: "#fff",
-  cursor: "pointer",
-  transition: "background-color 0.3s ease",
-};
-
-const deleteButtonStyle = {
-  padding: "10px 20px",
-  borderRadius: "4px",
-  border: "none",
-  backgroundColor: "#f44336",
-  color: "#fff",
-  cursor: "pointer",
-  transition: "background-color 0.3s ease",
-};
-
-const viewButtonStyle = {
-  padding: "10px 20px",
-  borderRadius: "4px",
-  border: "none",
-  backgroundColor: "#007bff",
-  color: "#fff",
-  cursor: "pointer",
-  transition: "background-color 0.3s ease",
-  marginTop: "10px",
-};
-
-const addButtonStyle = {
-  padding: "10px 20px",
-  borderRadius: "4px",
-  border: "none",
-  backgroundColor: "#28a745",
-  color: "#fff",
-  cursor: "pointer",
-  transition: "background-color 0.3s ease",
-  marginTop: "10px",
-};
-
-const selectStyle = {
-  padding: "10px",
-  marginTop: "10px",
-  borderRadius: "4px",
-  border: "1px solid #ccc",
-  width: "100%",
-};
-
-const errorStyle = {
-  color: "red",
-  textAlign: "center",
-  marginTop: "20px",
-};
-
-const loadingStyle = {
-  color: "#333",
-  textAlign: "center",
-  marginTop: "20px",
-};
 
 export default VehicleDetails;
