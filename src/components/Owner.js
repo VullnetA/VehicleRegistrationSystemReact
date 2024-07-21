@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchWithAuth } from "./fetchWithAuth"; // Import the fetchWithAuth function
+import { fetchWithAuth } from "./fetchWithAuth";
+import Header from "./Header";
+import "../style/Owner.css";
 
 function Owner() {
   const [owners, setOwners] = useState([]);
@@ -15,7 +17,7 @@ function Owner() {
       const response = await fetchWithAuth(url);
       if (response.ok) {
         const data = await response.json();
-        // Check if the response is an array or a single object
+
         let ownersArray = [];
         if (Array.isArray(data)) {
           ownersArray = data;
@@ -45,7 +47,7 @@ function Owner() {
         }
       );
       if (response.ok) {
-        fetchData("https://localhost:7221/api/Owner"); // Refresh the list after deletion
+        fetchData("https://localhost:7221/api/Owner");
       } else {
         setError("Failed to delete owner");
       }
@@ -77,230 +79,121 @@ function Owner() {
   };
 
   return (
-    <div style={containerStyle}>
-      <div style={headerStyle}>
-        <h1 style={titleStyle}>Owners</h1>
-        <div style={searchContainerStyle}>
-          <label htmlFor="searchType" style={searchLabelStyle}>
-            Search By:{" "}
-          </label>
-          <select
-            id="searchType"
-            value={searchType}
-            onChange={(e) => setSearchType(e.target.value)}
-            style={searchSelectStyle}
-          >
-            <option value="">Select</option>
-            <option value="id">ID</option>
-            <option value="name">Name</option>
-            <option value="city">City</option>
-            <option value="vehicle">Vehicle</option>
-          </select>
-        </div>
-        {searchType && (
-          <form onSubmit={handleSearch} style={searchFormStyle}>
-            <label htmlFor="searchQuery" style={searchLabelStyle}>
-              Enter{" "}
-              {searchType === "id"
-                ? "ID"
-                : searchType === "vehicle"
-                ? "Manufacturer"
-                : searchType}
-              :
+    <div>
+      <Header onLogout={() => console.log("Logged out")} />
+      <div className="owner-container">
+        <div className="owner-header">
+          <h1 className="owner-title">Owners</h1>
+          <div className="owner-search-container">
+            <label htmlFor="searchType" className="owner-search-label">
+              Search By:{" "}
             </label>
-            <input
-              id="searchQuery"
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              style={searchInputStyle}
-            />
-            {searchType === "vehicle" && (
-              <div>
-                <label htmlFor="vehicleModel" style={searchLabelStyle}>
-                  Model:
-                </label>
-                <input
-                  id="vehicleModel"
-                  type="text"
-                  value={vehicleModel}
-                  onChange={(e) => setVehicleModel(e.target.value)}
-                  style={searchInputStyle}
-                />
-              </div>
-            )}
-            <button type="submit" style={searchButtonStyle}>
-              Search
-            </button>
-          </form>
-        )}
-      </div>
+            <select
+              id="searchType"
+              value={searchType}
+              onChange={(e) => setSearchType(e.target.value)}
+              className="owner-search-select"
+            >
+              <option value="">Select</option>
+              <option value="id">ID</option>
+              <option value="name">Name</option>
+              <option value="city">City</option>
+              <option value="vehicle">Vehicle</option>
+            </select>
+          </div>
+          {searchType && (
+            <form onSubmit={handleSearch} className="owner-search-form">
+              <label htmlFor="searchQuery" className="owner-search-label">
+                Enter{" "}
+                {searchType === "id"
+                  ? "ID"
+                  : searchType === "vehicle"
+                  ? "Manufacturer"
+                  : searchType}
+                :
+              </label>
+              <input
+                id="searchQuery"
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="owner-search-input"
+              />
+              {searchType === "vehicle" && (
+                <div>
+                  <label htmlFor="vehicleModel" className="owner-search-label">
+                    Model:
+                  </label>
+                  <input
+                    id="vehicleModel"
+                    type="text"
+                    value={vehicleModel}
+                    onChange={(e) => setVehicleModel(e.target.value)}
+                    className="owner-search-input"
+                  />
+                </div>
+              )}
+              <button type="submit" className="owner-search-button">
+                Search
+              </button>
+            </form>
+          )}
+        </div>
 
-      {error && <p style={errorStyle}>{error}</p>}
+        {error && <p className="owner-error">{error}</p>}
 
-      <table style={tableStyle}>
-        <thead>
-          <tr>
-            <th style={thStyle}>First Name</th>
-            <th style={thStyle}>Last Name</th>
-            <th style={thStyle}>Date of Birth</th>
-            <th style={thStyle}>Phone</th>
-            <th style={thStyle}>Address</th>
-            <th style={thStyle}>License Issue Date</th>
-            <th style={thStyle}>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {owners?.map((owner) => (
-            <tr key={owner.id} style={trStyle}>
-              <td style={tdStyle}>{owner.firstName}</td>
-              <td style={tdStyle}>{owner.lastName}</td>
-              <td style={tdStyle}>
-                {new Date(owner.dateOfBirth).toLocaleDateString()}
-              </td>
-              <td style={tdStyle}>{owner.phone}</td>
-              <td style={tdStyle}>{owner.address}</td>
-              <td style={tdStyle}>
-                {new Date(owner.licenseIssueDate).toLocaleDateString()}
-              </td>
-              <td style={tdStyle}>
-                <button
-                  onClick={() => navigate(`/owner/${owner.id}`)}
-                  style={buttonStyle}
-                >
-                  Details
-                </button>
-                <button
-                  onClick={() => navigate(`/edit-owner/${owner.id}`)}
-                  style={buttonStyle}
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(owner.id)}
-                  style={deleteButtonStyle}
-                >
-                  Delete
-                </button>
-              </td>
+        <table className="owner-table">
+          <thead>
+            <tr>
+              <th className="owner-th">First Name</th>
+              <th className="owner-th">Last Name</th>
+              <th className="owner-th">Date of Birth</th>
+              <th className="owner-th">Phone</th>
+              <th className="owner-th">Address</th>
+              <th className="owner-th">License Issue Date</th>
+              <th className="owner-th">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {owners?.map((owner) => (
+              <tr key={owner.id} className="owner-tr">
+                <td className="owner-td">{owner.firstName}</td>
+                <td className="owner-td">{owner.lastName}</td>
+                <td className="owner-td">
+                  {new Date(owner.dateOfBirth).toLocaleDateString()}
+                </td>
+                <td className="owner-td">{owner.phone}</td>
+                <td className="owner-td">{owner.address}</td>
+                <td className="owner-td">
+                  {new Date(owner.licenseIssueDate).toLocaleDateString()}
+                </td>
+                <td className="owner-td">
+                  <button
+                    onClick={() => navigate(`/owner/${owner.id}`)}
+                    className="owner-button"
+                  >
+                    Details
+                  </button>
+                  <button
+                    onClick={() => navigate(`/edit-owner/${owner.id}`)}
+                    className="owner-button"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(owner.id)}
+                    className="owner-delete-button"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
-
-const containerStyle = {
-  marginLeft: "220px", // Adjusted to start after the sidebar
-  marginTop: "80px", // Adjusted to start after the header
-  padding: "20px 40px",
-  borderRadius: "8px",
-};
-
-const headerStyle = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: "20px",
-};
-
-const titleStyle = {
-  color: "#333",
-  fontSize: "2em",
-  fontWeight: "bold",
-};
-
-const searchContainerStyle = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center", // Center the search section
-  flex: 1, // Allow the search section to take available space
-};
-
-const searchLabelStyle = {
-  marginBottom: "10px",
-  color: "#333",
-};
-
-const searchSelectStyle = {
-  padding: "10px",
-  borderRadius: "4px",
-  border: "1px solid #ccc",
-  marginBottom: "10px",
-};
-
-const searchFormStyle = {
-  display: "flex",
-  alignItems: "center",
-  flexDirection: "column",
-  marginBottom: "20px",
-};
-
-const searchInputStyle = {
-  padding: "10px",
-  borderRadius: "4px",
-  border: "1px solid #ccc",
-  marginRight: "10px",
-  width: "100%",
-  maxWidth: "400px",
-  marginBottom: "10px",
-};
-
-const searchButtonStyle = {
-  padding: "10px 20px",
-  borderRadius: "4px",
-  border: "none",
-  backgroundColor: "#007bff",
-  color: "#fff",
-  cursor: "pointer",
-  transition: "background-color 0.3s ease",
-};
-
-const tableStyle = {
-  width: "100%",
-  borderCollapse: "collapse",
-  marginTop: "20px",
-};
-
-const thStyle = {
-  borderBottom: "2px solid #ddd",
-  padding: "10px",
-  textAlign: "left",
-};
-
-const trStyle = {
-  borderBottom: "1px solid #ddd",
-};
-
-const tdStyle = {
-  padding: "10px",
-  textAlign: "left",
-};
-
-const buttonStyle = {
-  padding: "10px 20px", // Increased padding for larger buttons
-  borderRadius: "4px",
-  border: "none",
-  backgroundColor: "#007bff",
-  color: "#fff",
-  cursor: "pointer",
-  marginRight: "5px",
-};
-
-const deleteButtonStyle = {
-  padding: "10px 20px", // Increased padding for larger buttons
-  borderRadius: "4px",
-  border: "none",
-  backgroundColor: "#f44336",
-  color: "#fff",
-  cursor: "pointer",
-};
-
-const errorStyle = {
-  color: "red",
-  textAlign: "center",
-  marginTop: "20px",
-};
 
 export default Owner;

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { fetchWithAuth } from "./fetchWithAuth"; // Import the fetchWithAuth function
+import { fetchWithAuth } from "./fetchWithAuth";
+import Header from "./Header";
+import "../style/Statistics.css";
 
 function Statistics() {
   const [brandCounts, setBrandCounts] = useState([]);
@@ -222,17 +224,13 @@ function Statistics() {
   }, []);
 
   const renderTable = (data, title) => (
-    <div style={sectionStyle}>
-      <h2 style={sectionTitleStyle}>{title}</h2>
-      <table style={tableStyle}>
+    <div className="stats-section">
+      <h2 className="stats-section-title">{title}</h2>
+      <table className="stats-table">
         <thead>
           <tr>
-            <th style={thStyle}>Type</th>
-            <th
-              style={{ ...thStyle, textAlign: "right", paddingRight: "20px" }}
-            >
-              Count
-            </th>
+            <th className="stats-th">Type</th>
+            <th className="stats-th stats-th-count">Count</th>
           </tr>
         </thead>
         <tbody>
@@ -246,9 +244,9 @@ function Statistics() {
                 item.year ||
                 item.category
               }
-              style={trStyle}
+              className="stats-tr"
             >
-              <td style={tdStyle}>
+              <td className="stats-td">
                 {item.brand ||
                   item.transmission ||
                   item.city ||
@@ -256,9 +254,7 @@ function Statistics() {
                   item.year ||
                   item.category}
               </td>
-              <td style={{ ...countTdStyle, paddingRight: "20px" }}>
-                {item.count}
-              </td>
+              <td className="stats-td stats-td-count">{item.count}</td>
             </tr>
           ))}
         </tbody>
@@ -267,86 +263,26 @@ function Statistics() {
   );
 
   return (
-    <div style={containerStyle}>
-      <h1 style={titleStyle}>Statistics</h1>
-      {error && <p style={errorStyle}>{error}</p>}
-      <div style={rowStyle}>
-        {renderTable(brandCounts, "Vehicle Counts by Brand")}
-        {renderTable(transmissionCounts, "Vehicle Counts by Transmission")}
-      </div>
-      <div style={rowStyle}>
-        {renderTable(licenseCountsByCity, "Driver License Counts by City")}
-        {renderTable(fuelTypeCounts, "Vehicle Counts by Fuel Type")}
-      </div>
-      <div style={rowStyle}>
-        {renderTable(yearCounts, "Vehicle Counts by Year")}
-        {renderTable(categoryCounts, "Vehicle Counts by Category")}
+    <div>
+      <Header onLogout={() => console.log("Logged out")} />
+      <div className="stats-container">
+        <h1 className="stats-title">Statistics</h1>
+        {error && <p className="stats-error">{error}</p>}
+        <div className="stats-row">
+          {renderTable(brandCounts, "Vehicle Counts by Brand")}
+          {renderTable(transmissionCounts, "Vehicle Counts by Transmission")}
+        </div>
+        <div className="stats-row">
+          {renderTable(licenseCountsByCity, "Driver License Counts by City")}
+          {renderTable(fuelTypeCounts, "Vehicle Counts by Fuel Type")}
+        </div>
+        <div className="stats-row">
+          {renderTable(yearCounts, "Vehicle Counts by Year")}
+          {renderTable(categoryCounts, "Vehicle Counts by Category")}
+        </div>
       </div>
     </div>
   );
 }
-
-const containerStyle = {
-  marginLeft: "220px", // Adjusted to start after the sidebar
-  marginTop: "80px", // Adjusted to start after the header
-  padding: "20px 40px",
-  backgroundColor: "#f4f4f9",
-  borderRadius: "8px",
-  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-};
-
-const titleStyle = {
-  marginBottom: "20px",
-  color: "#333",
-};
-
-const rowStyle = {
-  display: "flex",
-  justifyContent: "space-between",
-  marginBottom: "40px",
-};
-
-const sectionStyle = {
-  flex: "0 0 48%", // Ensures two sections fit in one row with a small gap
-  backgroundColor: "#fff",
-  padding: "20px",
-  borderRadius: "8px",
-  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-};
-
-const sectionTitleStyle = {
-  marginBottom: "10px",
-  color: "#333",
-};
-
-const tableStyle = {
-  width: "100%",
-  borderCollapse: "collapse",
-  marginTop: "10px",
-};
-
-const thStyle = {
-  borderBottom: "2px solid #ddd",
-  padding: "10px",
-  textAlign: "left",
-};
-
-const trStyle = {
-  borderBottom: "1px solid #ddd",
-};
-
-const tdStyle = {
-  padding: "10px",
-  textAlign: "left",
-};
-
-const countTdStyle = {
-  padding: "10px",
-  textAlign: "right", // Align counts slightly to the right
-};
-
-const errorStyle = {
-  color: "red",
-};
 
 export default Statistics;

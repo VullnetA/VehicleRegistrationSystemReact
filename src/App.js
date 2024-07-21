@@ -20,7 +20,7 @@ import OwnerDetails from "./components/OwnerDetails";
 import EditOwner from "./components/EditOwner";
 import AddOwner from "./components/AddOwner";
 import InsuranceDetails from "./components/InsuranceDetails";
-import Header from "./components/Header"; // Import Header component
+import Header from "./components/Header";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -38,7 +38,7 @@ function App() {
       <div className="App">
         {isAuthenticated && <Header onLogout={handleLogout} />}
         {isAuthenticated && <Sidebar />}
-        <div className="main-content">
+        <div>
           <Routes>
             <Route
               path="/"
