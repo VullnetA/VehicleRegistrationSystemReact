@@ -3,7 +3,7 @@ import { fetchWithAuth } from "./fetchWithAuth";
 import Header from "./Header";
 import "../style/Statistics.css";
 
-function Statistics() {
+function Statistics({ onLogout }) {
   const [brandCounts, setBrandCounts] = useState([]);
   const [transmissionCounts, setTransmissionCounts] = useState([]);
   const [licenseCountsByCity, setLicenseCountsByCity] = useState([]);
@@ -264,7 +264,7 @@ function Statistics() {
 
   return (
     <div>
-      <Header onLogout={() => console.log("Logged out")} />
+      <Header onLogout={onLogout} />
       <div className="stats-container">
         <h1 className="stats-title">Statistics</h1>
         {error && <p className="stats-error">{error}</p>}

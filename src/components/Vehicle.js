@@ -4,7 +4,7 @@ import { fetchWithAuth } from "./fetchWithAuth";
 import Header from "./Header";
 import "../style/Vehicle.css";
 
-function Vehicle() {
+function Vehicle({ onLogout }) {
   const [vehicles, setVehicles] = useState([]);
   const [registeredCount, setRegisteredCount] = useState(0);
   const [unregisteredCount, setUnregisteredCount] = useState(0);
@@ -157,7 +157,7 @@ function Vehicle() {
 
   return (
     <div>
-      <Header onLogout={() => console.log("Logged out")} />
+      <Header onLogout={onLogout} />
       <div className="vehicle-container">
         <div className="vehicle-header">
           <h1 className="vehicle-title">Vehicles</h1>
@@ -172,13 +172,13 @@ function Vehicle() {
               className="vehicle-search-select"
             >
               <option value="">Select</option>
-              <option value="Vehicle ID">ID</option>
-              <option value="Owner ID">Owner</option>
-              <option value="Year">Year</option>
-              <option value="Horsepower">Horsepower</option>
-              <option value="Fuel">Fuel Type</option>
-              <option value="Brand">Brand</option>
-              <option value="License Plate">License Plate</option>
+              <option value="id">ID</option>
+              <option value="owner">Owner</option>
+              <option value="year">Year</option>
+              <option value="power">Horsepower</option>
+              <option value="fuel">Fuel Type</option>
+              <option value="brand">Brand</option>
+              <option value="licensePlate">License Plate</option>
             </select>
             {searchType && (
               <form onSubmit={handleSearch} className="vehicle-search-form">

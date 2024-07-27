@@ -4,7 +4,7 @@ import { fetchWithAuth } from "./fetchWithAuth";
 import Header from "./Header";
 import "../style/EditForm.css";
 
-function EditVehicle() {
+function EditVehicle({ onLogout }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [vehicle, setVehicle] = useState(null);
@@ -74,7 +74,7 @@ function EditVehicle() {
 
   return (
     <div>
-      <Header onLogout={() => console.log("Logged out")} />
+      <Header onLogout={onLogout} />
       <div className="edit-container">
         <h1 className="edit-title">Edit Vehicle</h1>
         <form onSubmit={handleSubmit} className="edit-form">

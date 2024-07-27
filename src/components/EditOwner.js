@@ -4,7 +4,7 @@ import { fetchWithAuth } from "./fetchWithAuth";
 import Header from "./Header";
 import "../style/EditForm.css";
 
-function EditOwner() {
+function EditOwner({ onLogout }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [owner, setOwner] = useState(null);
@@ -76,7 +76,7 @@ function EditOwner() {
 
   return (
     <div>
-      <Header onLogout={() => console.log("Logged out")} />
+      <Header onLogout={onLogout} />
       <div className="edit-container">
         <h1 className="edit-title">Edit Owner</h1>
         <form onSubmit={handleSubmit} className="edit-form">

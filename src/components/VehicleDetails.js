@@ -4,7 +4,7 @@ import { fetchWithAuth } from "./fetchWithAuth";
 import Header from "./Header";
 import "../style/VehicleDetails.css";
 
-function VehicleDetails() {
+function VehicleDetails({ onLogout }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [vehicle, setVehicle] = useState(null);
@@ -151,7 +151,7 @@ function VehicleDetails() {
 
   return (
     <div>
-      <Header onLogout={() => console.log("Logged out")} />
+      <Header onLogout={onLogout} />
       <div className="vehicle-details-container">
         <h1 className="vehicle-details-title">Vehicle Details</h1>
         <div className="vehicle-details-content-container">

@@ -54,57 +54,99 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route
               path="/welcome"
-              element={isAuthenticated ? <Welcome /> : <Navigate to="/login" />}
+              element={
+                isAuthenticated ? (
+                  <Welcome onLogout={handleLogout} />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
             />
             <Route
               path="/vehicles"
-              element={isAuthenticated ? <Vehicle /> : <Navigate to="/login" />}
+              element={
+                isAuthenticated ? (
+                  <Vehicle onLogout={handleLogout} />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
             />
             <Route
               path="/owners"
-              element={isAuthenticated ? <Owner /> : <Navigate to="/login" />}
+              element={
+                isAuthenticated ? (
+                  <Owner onLogout={handleLogout} />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
             />
             <Route
               path="/add-vehicle"
               element={
-                isAuthenticated ? <AddVehicle /> : <Navigate to="/login" />
+                isAuthenticated ? (
+                  <AddVehicle onLogout={handleLogout} />
+                ) : (
+                  <Navigate to="/login" />
+                )
               }
             />
             <Route
               path="/add-owner"
               element={
-                isAuthenticated ? <AddOwner /> : <Navigate to="/login" />
+                isAuthenticated ? (
+                  <AddOwner onLogout={handleLogout} />
+                ) : (
+                  <Navigate to="/login" />
+                )
               }
             />
             <Route
               path="/vehicle/:id"
               element={
-                isAuthenticated ? <VehicleDetails /> : <Navigate to="/login" />
+                isAuthenticated ? (
+                  <VehicleDetails onLogout={handleLogout} />
+                ) : (
+                  <Navigate to="/login" />
+                )
               }
             />
             <Route
               path="/edit-vehicle/:id"
               element={
-                isAuthenticated ? <EditVehicle /> : <Navigate to="/login" />
+                isAuthenticated ? (
+                  <EditVehicle onLogout={handleLogout} />
+                ) : (
+                  <Navigate to="/login" />
+                )
               }
             />
             <Route
               path="/owner/:id"
               element={
-                isAuthenticated ? <OwnerDetails /> : <Navigate to="/login" />
+                isAuthenticated ? (
+                  <OwnerDetails onLogout={handleLogout} />
+                ) : (
+                  <Navigate to="/login" />
+                )
               }
             />
             <Route
               path="/edit-owner/:id"
               element={
-                isAuthenticated ? <EditOwner /> : <Navigate to="/login" />
+                isAuthenticated ? (
+                  <EditOwner onLogout={handleLogout} />
+                ) : (
+                  <Navigate to="/login" />
+                )
               }
             />
             <Route
               path="/insurance/:id"
               element={
                 isAuthenticated ? (
-                  <InsuranceDetails />
+                  <InsuranceDetails onLogout={handleLogout} />
                 ) : (
                   <Navigate to="/login" />
                 )
@@ -113,7 +155,11 @@ function App() {
             <Route
               path="/statistics"
               element={
-                isAuthenticated ? <Statistics /> : <Navigate to="/login" />
+                isAuthenticated ? (
+                  <Statistics onLogout={handleLogout} />
+                ) : (
+                  <Navigate to="/login" />
+                )
               }
             />
           </Routes>
