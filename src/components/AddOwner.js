@@ -3,7 +3,7 @@ import { fetchWithAuth } from "./fetchWithAuth";
 import Header from "./Header";
 import "../style/FormStyles.css";
 
-function AddOwner() {
+function AddOwner({ onLogout }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
@@ -64,7 +64,7 @@ function AddOwner() {
 
   return (
     <div>
-      <Header onLogout={() => console.log("Logged out")} />
+      <Header onLogout={onLogout} />
       <div className="add-container">
         <h1 className="add-title">Add Owner</h1>
         <form onSubmit={handleSubmit} className="add-form">

@@ -4,7 +4,7 @@ import { fetchWithAuth } from "./fetchWithAuth";
 import Header from "./Header";
 import "../style/InsuranceDetails.css";
 
-function InsuranceDetails() {
+function InsuranceDetails({ onLogout }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [insurance, setInsurance] = useState(null);
@@ -58,7 +58,7 @@ function InsuranceDetails() {
 
   return (
     <div>
-      <Header onLogout={() => console.log("Logged out")} />
+      <Header onLogout={onLogout} />
       <div className="insurance-container">
         <h1 className="insurance-title">Insurance Details</h1>
         <div className="insurance-contentContainer">

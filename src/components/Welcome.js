@@ -2,10 +2,10 @@ import React from "react";
 import Header from "./Header";
 import "../style/Welcome.css";
 
-function Welcome() {
+function Welcome({ onLogout }) {
   return (
     <div>
-      <Header onLogout={() => console.log("Logged out")} />
+      <Header onLogout={onLogout} />
       <div className="welcome-page-container">
         <h1 className="welcome-page-title">
           Welcome to the Official Vehicle Management System of North Macedonia

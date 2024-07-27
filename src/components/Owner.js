@@ -4,7 +4,7 @@ import { fetchWithAuth } from "./fetchWithAuth";
 import Header from "./Header";
 import "../style/Owner.css";
 
-function Owner() {
+function Owner({ onLogout }) {
   const [owners, setOwners] = useState([]);
   const [searchType, setSearchType] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -80,7 +80,7 @@ function Owner() {
 
   return (
     <div>
-      <Header onLogout={() => console.log("Logged out")} />
+      <Header onLogout={onLogout} />
       <div className="owner-container">
         <div className="owner-header">
           <h1 className="owner-title">Owners</h1>

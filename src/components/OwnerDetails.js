@@ -4,7 +4,7 @@ import { fetchWithAuth } from "./fetchWithAuth";
 import Header from "./Header";
 import "../style/OwnerDetails.css";
 
-function OwnerDetails() {
+function OwnerDetails({ onLogout }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [owner, setOwner] = useState(null);
@@ -57,7 +57,7 @@ function OwnerDetails() {
 
   return (
     <div>
-      <Header onLogout={() => console.log("Logged out")} />
+      <Header onLogout={onLogout} />
       <div className="owner-details-container">
         <h1 className="owner-details-title">Owner Details</h1>
         <div className="owner-details-content-container">

@@ -3,7 +3,7 @@ import { fetchWithAuth } from "./fetchWithAuth";
 import Header from "./Header";
 import "../style/FormStyles.css";
 
-function AddVehicle() {
+function AddVehicle({ onLogout }) {
   const [manufacturer, setManufacturer] = useState("");
   const [model, setModel] = useState("");
   const [year, setYear] = useState("");
@@ -63,7 +63,7 @@ function AddVehicle() {
 
   return (
     <div>
-      <Header onLogout={() => console.log("Logged out")} />
+      <Header onLogout={onLogout} />
       <div className="add-container">
         <h1 className="add-title">Add Vehicle</h1>
         <form onSubmit={handleSubmit} className="add-form">
