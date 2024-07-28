@@ -91,7 +91,7 @@ function EditVehicle({ onLogout }) {
             <label className="edit-label">Owner ID:</label>
             <input
               type="number"
-              value={ownerId}
+              value={vehicle.owner.id}
               onChange={(e) => setOwnerId(e.target.value)}
               className="edit-input"
             />

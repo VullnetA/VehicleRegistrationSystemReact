@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -21,30 +21,48 @@ import EditOwner from "./components/EditOwner";
 import AddOwner from "./components/AddOwner";
 import InsuranceDetails from "./components/InsuranceDetails";
 import Header from "./components/Header";
+import UserVehicles from "./components/UserVehicles";
+import VehicleDetailsReadOnly from "./components/VehicleDetailsReadOnly";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [role, setRole] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userRole = localStorage.getItem("role");
+    if (token) {
+      setIsAuthenticated(true);
+      setRole(userRole);
+    }
+  }, []);
 
   const handleLogin = () => {
     setIsAuthenticated(true);
+    setRole(localStorage.getItem("role"));
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
+    setRole(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
   };
 
   return (
     <Router>
       <div className="App">
         {isAuthenticated && <Header onLogout={handleLogout} />}
-        {isAuthenticated && <Sidebar />}
+        {isAuthenticated && role === "Admin" && <Sidebar />}
         <div>
           <Routes>
             <Route
               path="/"
               element={
                 isAuthenticated ? (
-                  <Navigate to="/welcome" />
+                  <Navigate
+                    to={role === "Admin" ? "/welcome" : "/my-vehicles"}
+                  />
                 ) : (
                   <Login onLogin={handleLogin} />
                 )
@@ -57,6 +75,16 @@ function App() {
               element={
                 isAuthenticated ? (
                   <Welcome onLogout={handleLogout} />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/my-vehicles"
+              element={
+                isAuthenticated ? (
+                  <UserVehicles onLogout={handleLogout} />
                 ) : (
                   <Navigate to="/login" />
                 )
@@ -107,6 +135,16 @@ function App() {
               element={
                 isAuthenticated ? (
                   <VehicleDetails onLogout={handleLogout} />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/vehicle-readonly/:id"
+              element={
+                isAuthenticated ? (
+                  <VehicleDetailsReadOnly onLogout={handleLogout} />
                 ) : (
                   <Navigate to="/login" />
                 )

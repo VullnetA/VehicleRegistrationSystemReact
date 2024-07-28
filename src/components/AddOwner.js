@@ -13,6 +13,7 @@ function AddOwner({ onLogout }) {
   const [gender, setGender] = useState("");
   const [address, setAddress] = useState("");
   const [licenseIssueDate, setLicenseIssueDate] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
@@ -31,6 +32,7 @@ function AddOwner({ onLogout }) {
       gender: Number(gender),
       address,
       licenseIssueDate: licenseIssueDateWithTime,
+      password,
     };
     console.log("Sending owner data:", ownerData);
 
@@ -50,6 +52,7 @@ function AddOwner({ onLogout }) {
         setGender("");
         setAddress("");
         setLicenseIssueDate("");
+        setPassword("");
         setError(null);
       } else {
         const errorData = await response.json();
@@ -149,6 +152,16 @@ function AddOwner({ onLogout }) {
               type="date"
               value={licenseIssueDate}
               onChange={(e) => setLicenseIssueDate(e.target.value)}
+              className="add-input"
+            />
+          </div>
+          <div className="add-form-group">
+            <label className="add-label">Password:</label>{" "}
+            {/* Add password input */}
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="add-input"
             />
           </div>

@@ -11,7 +11,7 @@ function Login({ onLogin }) {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://localhost:7221/login", {
+      const response = await fetch("https://localhost:7221/api/Auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -21,16 +21,28 @@ function Login({ onLogin }) {
 
       if (response.ok) {
         const data = await response.json();
+        console.log("Login successful, received data:", data);
         localStorage.setItem("token", data.token);
+        localStorage.setItem("role", data.roles[0]);
+        localStorage.setItem("ownerId", data.ownerId);
+        console.log("Stored ownerId:", data.ownerId);
+
         onLogin();
-        navigate("/welcome");
+        if (data.roles.includes("Admin")) {
+          navigate("/welcome");
+        } else if (data.roles.includes("Owner")) {
+          navigate("/my-vehicles");
+        }
         setEmail("");
         setPassword("");
         setError(null);
       } else {
-        setError("Login failed");
+        const errorData = await response.json();
+        console.error("Login failed:", errorData);
+        setError("Login failed: " + errorData.message);
       }
     } catch (error) {
+      console.error("An error occurred during login:", error);
       setError("An error occurred. Please try again.");
     }
   };
