@@ -1,6 +1,11 @@
 export const fetchWithAuth = async (url, options = {}) => {
   const token = localStorage.getItem("token");
 
+  if (!token) {
+    console.error("No token found in localStorage");
+    throw new Error("No token found");
+  }
+
   const headers = {
     ...options.headers,
     Authorization: `Bearer ${token}`,

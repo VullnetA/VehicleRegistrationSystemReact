@@ -10,6 +10,13 @@ function InsuranceDetails({ onLogout }) {
   const [insurance, setInsurance] = useState(null);
   const [error, setError] = useState(null);
 
+  const insuranceCompanyMap = {
+    0: "SAVA",
+    1: "UNIQA",
+    2: "TRIGLAV",
+    3: "AKTIVA",
+  };
+
   useEffect(() => {
     const fetchInsurance = async () => {
       try {
@@ -48,6 +55,10 @@ function InsuranceDetails({ onLogout }) {
     }
   };
 
+  const getInsuranceCompanyName = (name) => {
+    return insuranceCompanyMap[name] || "Unknown Insurance Company";
+  };
+
   if (error) {
     return <div className="insurance-error">{error}</div>;
   }
@@ -63,7 +74,8 @@ function InsuranceDetails({ onLogout }) {
         <h1 className="insurance-title">Insurance Details</h1>
         <div className="insurance-contentContainer">
           <p className="insurance-detail">
-            <strong>Insurance Company:</strong> {insurance.insuranceCompany}
+            <strong>Insurance Company:</strong>{" "}
+            {getInsuranceCompanyName(insurance.insuranceCompany)}
           </p>
           <p className="insurance-detail">
             <strong>Insurance Fee:</strong> {insurance.insuranceFee}

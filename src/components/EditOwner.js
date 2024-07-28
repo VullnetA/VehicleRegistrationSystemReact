@@ -8,7 +8,6 @@ function EditOwner({ onLogout }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [owner, setOwner] = useState(null);
-  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [error, setError] = useState(null);
@@ -22,7 +21,6 @@ function EditOwner({ onLogout }) {
         if (response.ok) {
           const data = await response.json();
           setOwner(data);
-          setEmail(data.email || "");
           setPhone(data.phone || "");
           setAddress(data.address || "");
         } else {
@@ -38,7 +36,6 @@ function EditOwner({ onLogout }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const updatedOwner = {
-      email,
       phone,
       address,
     };
@@ -80,15 +77,6 @@ function EditOwner({ onLogout }) {
       <div className="edit-container">
         <h1 className="edit-title">Edit Owner</h1>
         <form onSubmit={handleSubmit} className="edit-form">
-          <div className="edit-form-group">
-            <label className="edit-label">Email:</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="edit-input"
-            />
-          </div>
           <div className="edit-form-group">
             <label className="edit-label">Phone:</label>
             <input
