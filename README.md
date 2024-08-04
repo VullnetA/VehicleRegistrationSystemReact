@@ -61,4 +61,4 @@ We welcome contributions! If you want to contribute to this project, please foll
 
 ## Contact
 
-For any inquiries or support, please contact me at **vullnetazizi9@gmail.com**.
+For any inquiries or support, please contact me at vullnetazizi9@gmail.com.
