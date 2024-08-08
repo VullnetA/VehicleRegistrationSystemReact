@@ -1,3 +1,6 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
 name: Build and deploy Node.js app to Azure Web App - vehicle-registration
 
 on:
@@ -18,28 +21,17 @@ jobs:
         with:
           node-version: '20.x'
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build project
-        run: npm run build --if-present
-
-      - name: Run tests
-        run: npm test -- --passWithNoTests --watchAll=false
-
-      - name: Upload build artifact
+      - name: npm install, build, and test
+        run: |
+          npm install
+          npm run build --if-present
+          npm test -- --passWithNoTests --watchAll=false
+      
+      - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: |
-            # Adjust these paths according to your build output
-            dist/**/*
-            build/**/*
-            package.json
-            package-lock.json
-            yarn.lock
-            .env.production
-          if-no-files-found: error
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
@@ -48,7 +40,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write # This is required for requesting the JWT
+      id-token: write #This is required for requesting the JWT
 
     steps:
       - name: Download artifact from build job
@@ -59,14 +51,14 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_780901D9C27E40E891AEB7F34FA2CAC9 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_225F39B8F5C44C56AD40670A35F0C16E }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_F92C8C87ED9E4BC381BB7FE83C70C0E5 }}
 
-      - name: Deploy to Azure Web App
+      - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'vehicle-registration'
           slot-name: 'Production'
-          package: ./build
+          package: .
