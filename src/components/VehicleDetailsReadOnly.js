@@ -53,7 +53,7 @@ function VehicleDetailsReadOnly({ onLogout }) {
   return (
     <div>
       <Header onLogout={onLogout} />
-      <div className="vehicle-details-container">
+      <div className="vehicle-details-read-only-container">
         <h1 className="vehicle-details-title">Vehicle Details</h1>
         <div className="vehicle-details-content-container">
           <div className="vehicle-details-column">
