@@ -26,15 +26,20 @@ jobs:
 
       - name: Run tests
         run: npm test -- --passWithNoTests --watchAll=false
-      
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: node-app
           path: |
+            # Adjust these paths according to your build output
+            dist/**/*
             build/**/*
             package.json
             package-lock.json
+            yarn.lock
+            .env.production
+          if-no-files-found: error
 
   deploy:
     runs-on: ubuntu-latest
