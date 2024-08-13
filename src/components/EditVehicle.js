@@ -8,8 +8,8 @@ function EditVehicle({ onLogout }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [vehicle, setVehicle] = useState(null);
-  const [licensePlate, setLicensePlate] = useState(""); // Initialize as empty string
-  const [ownerId, setOwnerId] = useState(""); // Initialize as empty string
+  const [licensePlate, setLicensePlate] = useState("");
+  const [ownerId, setOwnerId] = useState("");
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -21,10 +21,10 @@ function EditVehicle({ onLogout }) {
         if (response.ok) {
           const data = await response.json();
           setVehicle(data);
-          setLicensePlate(data.licensePlate || ""); // Ensure it's a string
+          setLicensePlate(data.licensePlate || "");
           setOwnerId(
             data.owner.id !== undefined ? data.owner.id.toString() : ""
-          ); // Ensure it's a string
+          );
         } else {
           setError("Failed to fetch vehicle details");
         }
@@ -40,10 +40,8 @@ function EditVehicle({ onLogout }) {
     const updatedVehicle = {
       ...vehicle,
       licensePlate,
-      ownerId: Number(ownerId), // Convert ownerId to a number
+      ownerId: Number(ownerId),
     };
-
-    console.log("Updated Vehicle:", updatedVehicle); // Log the data being sent
 
     try {
       const response = await fetchWithAuth(
@@ -61,7 +59,6 @@ function EditVehicle({ onLogout }) {
         navigate(`/vehicle/${id}`);
       } else {
         const errorData = await response.json();
-        console.error("Error response:", errorData); // Log the error response
         setError(errorData.message || "Failed to update vehicle");
       }
     } catch (error) {
@@ -96,7 +93,7 @@ function EditVehicle({ onLogout }) {
             <label className="edit-label">Owner ID:</label>
             <input
               type="number"
-              value={ownerId} // Use ownerId from state
+              value={ownerId}
               onChange={(e) => setOwnerId(e.target.value)}
               className="edit-input"
             />

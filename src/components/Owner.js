@@ -10,6 +10,8 @@ function Owner({ onLogout }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [vehicleModel, setVehicleModel] = useState("");
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const ownersPerPage = 6;
   const navigate = useNavigate();
 
   const fetchData = async (url) => {
@@ -77,6 +79,16 @@ function Owner({ onLogout }) {
     }
     fetchData(url);
   };
+
+  const indexOfLastOwner = currentPage * ownersPerPage;
+  const indexOfFirstOwner = indexOfLastOwner - ownersPerPage;
+  const currentOwners = owners.slice(indexOfFirstOwner, indexOfLastOwner);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const totalPages = Math.ceil(owners.length / ownersPerPage);
 
   return (
     <div>
@@ -155,7 +167,7 @@ function Owner({ onLogout }) {
             </tr>
           </thead>
           <tbody>
-            {owners?.map((owner) => (
+            {currentOwners.map((owner) => (
               <tr key={owner.id} className="owner-tr">
                 <td className="owner-td">{owner.firstName}</td>
                 <td className="owner-td">{owner.lastName}</td>
@@ -191,6 +203,19 @@ function Owner({ onLogout }) {
             ))}
           </tbody>
         </table>
+        <div className="pagination">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={`pagination-button ${
+                page === currentPage ? "active" : ""
+              }`}
+            >
+              {page}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

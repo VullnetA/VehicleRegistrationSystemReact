@@ -25,21 +25,24 @@ import UserVehicles from "./components/UserVehicles";
 import VehicleDetailsReadOnly from "./components/VehicleDetailsReadOnly";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [role, setRole] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    localStorage.getItem("isAuthenticated") === "true" || false
+  );
+  const [role, setRole] = useState(localStorage.getItem("role") || null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userRole = localStorage.getItem("role");
     if (token) {
       setIsAuthenticated(true);
-      setRole(userRole);
+      setRole(userRole || "Owner");
     }
   }, []);
 
   const handleLogin = () => {
     setIsAuthenticated(true);
-    setRole(localStorage.getItem("role"));
+    setRole(localStorage.getItem("role") || "Owner");
+    localStorage.setItem("isAuthenticated", "true");
   };
 
   const handleLogout = () => {
@@ -47,6 +50,7 @@ function App() {
     setRole(null);
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+    localStorage.removeItem("isAuthenticated");
   };
 
   return (
