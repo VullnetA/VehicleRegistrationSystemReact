@@ -117,6 +117,15 @@ function AddOwner({ onLogout }) {
             />
           </div>
           <div className="add-form-group">
+            <label className="add-label">Password:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="add-input"
+            />
+          </div>
+          <div className="add-form-group">
             <label className="add-label">Phone:</label>
             <input
               type="text"
@@ -152,16 +161,6 @@ function AddOwner({ onLogout }) {
               type="date"
               value={licenseIssueDate}
               onChange={(e) => setLicenseIssueDate(e.target.value)}
-              className="add-input"
-            />
-          </div>
-          <div className="add-form-group">
-            <label className="add-label">Password:</label>{" "}
-            {/* Add password input */}
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
               className="add-input"
             />
           </div>

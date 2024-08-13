@@ -11,6 +11,8 @@ function Vehicle({ onLogout }) {
   const [searchType, setSearchType] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const vehiclesPerPage = 6;
   const navigate = useNavigate();
 
   const categoryEnum = [
@@ -155,6 +157,19 @@ function Vehicle({ onLogout }) {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  const indexOfLastVehicle = currentPage * vehiclesPerPage;
+  const indexOfFirstVehicle = indexOfLastVehicle - vehiclesPerPage;
+  const currentVehicles = vehicles.slice(
+    indexOfFirstVehicle,
+    indexOfLastVehicle
+  );
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const totalPages = Math.ceil(vehicles.length / vehiclesPerPage);
+
   return (
     <div>
       <Header onLogout={onLogout} />
@@ -225,7 +240,7 @@ function Vehicle({ onLogout }) {
             </tr>
           </thead>
           <tbody>
-            {vehicles?.map((vehicle) => (
+            {currentVehicles.map((vehicle) => (
               <tr key={vehicle.id} className="vehicle-tr">
                 <td className="vehicle-td">{vehicle.manufacturer}</td>
                 <td className="vehicle-td">{vehicle.model}</td>
@@ -275,6 +290,19 @@ function Vehicle({ onLogout }) {
             ))}
           </tbody>
         </table>
+        <div className="pagination">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={`pagination-button ${
+                page === currentPage ? "active" : ""
+              }`}
+            >
+              {page}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
