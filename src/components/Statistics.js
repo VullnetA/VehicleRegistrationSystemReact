@@ -13,13 +13,13 @@ function Statistics({ onLogout }) {
   const [error, setError] = useState(null);
 
   const carBrands = [
-    "Toyota",
+    "Fiat",
     "Ford",
-    "Chevrolet",
+    "Opel",
     "Seat",
     "Audi",
     "BMW",
-    "Mercedes",
+    "Mercedes-Benz",
     "Volkswagen",
   ];
   const transmissions = ["Manual", "Automatic", "Semiautomatic", "CVT"];
